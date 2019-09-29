@@ -230,11 +230,11 @@ def analyze_text(text, dictFile):
 #               An empty string is assumed to be non-plaintext.
 #-----------------------------------------------------------
 def is_plaintext(text, dictFile, threshold):
-    if (threshold <= 0 and threshold >= 1):
+    if (threshold < 0 or threshold > 1):
         threshold = 0.9
 
     matches, mismatches = analyze_text(text, dictFile)
-    
+        
     if (matches > 0 and mismatches >= 0):
         if ((matches/(matches + mismatches)) >= threshold):
             return True
