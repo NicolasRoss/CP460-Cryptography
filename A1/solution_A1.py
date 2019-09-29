@@ -105,6 +105,7 @@ def e_scytale(plaintext, key):
         for j in range(r):
             if cipherMatrix[j][i]!=-1:
                 ciphertext+=cipherMatrix[j][i]
+
     return ciphertext
 
 
@@ -233,7 +234,7 @@ def is_plaintext(text, dictFile, threshold):
         threshold = 0.9
 
     matches, mismatches = analyze_text(text, dictFile)
-
+    
     if (matches > 0 and mismatches >= 0):
         if ((matches/(matches + mismatches)) >= threshold):
             return True
@@ -267,17 +268,21 @@ def cryptanalysis_scytale(cipherFile, dictFile, startKey, endKey, threshold):
                 plaintext = d_scytale(ciphertext, key)
 
                 if (is_plaintext(plaintext, dictFile, threshold)):
-                    return plaintext
+                    print(plaintext)
+                    return key
 
                 else:
-                    print("Key ", key, " was invalid.")
+                    print("Key ", key, " failed.")
 
         else:
             print("Invalid threshold value. Operation aborted!")
+            return ''
 
     else:
         print("Invalid key range. Operation aborted!")
-            
+        return ''
+        
+    print("No key was found")
     return ''
 
 #---------------------------------
