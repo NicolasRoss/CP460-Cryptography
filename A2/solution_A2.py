@@ -438,7 +438,6 @@ def formatInput_playfair(plaintext):
     plaintext = remove_nonalpha(plaintext)
     n = len(plaintext)
     i = 0
-    j = 0
 
     while i < n:
         if (plaintext[i] == "W"):
@@ -472,13 +471,45 @@ def formatInput_playfair(plaintext):
 #---------------------------------------------------------------------------------------
 def e_playfair(plaintext, key):
     ciphertext = ''
-    square = utilities_A2.get_playfairSquare()
     text = formatInput_playfair(plaintext)
+    nonAlpha = get_nonalpha(text)
     textList = text.split()
-    cordA = (0, 0)
-    cordB = (0, 0)
-    n = 0
+    xA, yA = 0, 0
+    xB, yB = 0, 0
 
+    for e in textList:
+        for i in range(len(key)):
+            for j in range(len(key[0])):
+                if key[i][j] == e[0]:
+                    xA = j
+                    yA = i
+                
+                if key[i][j] == e[1]:
+                    xB = j
+                    yB = i
+        
+        if yA == yB:
+            if xA == (len(key) - 1):
+                xA = -1
+
+            if xB == (len(key) - 1):
+                xB = -1
+            
+            ciphertext = ciphertext + key[yA][xA + 1] + key[yB][xB + 1]
+        
+        elif xA == xB:
+            if yA == (len(key[0]) - 1):
+                yA = -1
+            
+            if yB == (len(key[0]) - 1):
+                yB = -1
+
+            ciphertext = ciphertext + key[yA + 1][xA] +key[yB + 1][xB]
+        
+        else:
+            ciphertext = ciphertext + key[yA][xB] + key[yB][xA]
+
+    ciphertext = insert_nonalpha(ciphertext, nonAlpha)
     return ciphertext
 
 #-------------------------------------------------------------------------------------
@@ -488,6 +519,45 @@ def e_playfair(plaintext, key):
 # Description:  Decryption using Wheatstone Playfair Cipher
 #-------------------------------------------------------------------------------
 def d_playfair(ciphertext, key):
-    # your code here
+    plaintext = ''
+    text = formatInput_playfair(ciphertext)
+    nonAlpha = get_nonalpha(text)
+    textList = text.split()
+    xA, yA = 0, 0
+    xB, yB = 0, 0
+    
+    for e in textList:
+        for i in range(len(key)):
+            for j in range(len(key[0])):
+                if key[i][j] == e[0]:
+                    xA = j
+                    yA = i
+                
+                if key[i][j] == e[1]:
+                    xB = j
+                    yB = i
+        
+        if yA == yB:
+            if xA == 0:
+                xA = len(key)
+
+            if xB == 0:
+                xB = len(key)
+            
+            plaintext = plaintext + key[yA][xA - 1] + key[yB][xB - 1]
+        
+        elif xA == xB:
+            if yA == 0:
+                yA = len(key[0])
+            
+            if yB == 0:
+                yB = len(key[0])
+
+            plaintext = plaintext + key[yA - 1][xA] + key[yB - 1][xB]
+        
+        else:
+            plaintext = plaintext + key[yA][xB] + key[yB][xA]
+
+    plaintext = insert_nonalpha(plaintext, nonAlpha)
     return plaintext
 

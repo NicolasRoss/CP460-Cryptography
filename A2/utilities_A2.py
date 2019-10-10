@@ -145,7 +145,7 @@ def get_chiSquared(text):
 #               Returns a list of strings, each pertaining to a dictionary word
 #-----------------------------------------------------------
 def load_dictionary(dictFile):
-    inFile = open(dictFile, 'r', encoding=" ISO-8859-15")
+    inFile = open(dictFile, 'r',encoding=" ISO-8859-15") 
     dictList = inFile.readlines()
     i = 0
     for word in dictList:
@@ -293,3 +293,4 @@ def get_playfairSquare():
               ['L', 'X', 'Y', 'Q', 'B'],
               ['M', 'N', 'O', 'P', 'A']]
     return square
+
